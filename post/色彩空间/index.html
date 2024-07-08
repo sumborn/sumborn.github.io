@@ -1,0 +1,261 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>色彩空间 | 夏至生荫</title>
+<link rel="shortcut icon" href="https://sumborn.github.io/favicon.ico?v=1720435485964">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://sumborn.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="色彩空间 | 夏至生荫 - Atom Feed" href="https://sumborn.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="1. Linear、Gamma、sRGB和伽马校正
+真实物理世界：光强度增加一倍，亮度增加一倍，线性关系
+显示器图像：显示器显示图像，电压增加一倍，亮度不是增加一倍，而是
+
+2.2也叫做该显示器的Gamma值，现代显示器的Gamma值也都大..." />
+    <meta name="keywords" content="Unity" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://sumborn.github.io">
+  <img class="avatar" src="https://sumborn.github.io/images/avatar.png?v=1720435485964" alt="">
+  </a>
+  <h1 class="site-title">
+    夏至生荫
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="/games" class="menu">
+          G1
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              色彩空间
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-05-22
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://sumborn.github.io/tag/fUo2XYy0O/" class="post-tag">
+                  # Unity
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h3 id="1-linear-gamma-srgb和伽马校正">1. Linear、Gamma、sRGB和伽马校正</h3>
+<p>真实物理世界：光强度增加一倍，亮度增加一倍，线性关系</p>
+<p>显示器图像：显示器显示图像，电压增加一倍，亮度不是增加一倍，而是</p>
+<figure data-type="image" tabindex="1"><img src="https://sumborn.github.io/post-images/1720431139971.png" alt="" loading="lazy"></figure>
+<p>2.2也叫做该显示器的Gamma值，现代显示器的Gamma值也都大约是2.2</p>
+<p>为了平衡人看显示器时，显示器显示的非线性关系，那就在显示器显示之前做一个平衡操作抵消掉，那么最终看到的就和物理世界看到的一样了，这个平衡操作操作就是伽马矫正</p>
+<p>在数学上，伽马矫正是一个约0.45的幂运算</p>
+<figure data-type="image" tabindex="2"><img src="https://sumborn.github.io/post-images/1720431150365.png" alt="" loading="lazy"></figure>
+<p>经过矫正，最终输出就和物理世界一样了</p>
+<figure data-type="image" tabindex="3"><img src="https://sumborn.github.io/post-images/1720431156514.png" alt="" loading="lazy"></figure>
+<p>sRGB：对应的是Gamma0.45所在的空间，由u微软和惠普一起开发</p>
+<p>sRGB为什么在Gamma0.45呢，保存的照片如果是Gamma0.45，那么当在显示器打开这个图片的时候，正好和显示器的Gamma2.2进行抵消，人眼看显示器看到的就和物理世界是一致的了</p>
+<hr>
+<h3 id="2-项目切换色彩空间">2. 项目切换色彩空间</h3>
+<p>简单看了下网上的问题和做法，做个总结，没有更深入去实践</p>
+<ol>
+<li>一般项目是立项之初就确定了渲染管线以及色彩空间，采用urp的话默认的一般是用linear</li>
+<li>色彩空间需要美术、模型、渲染共同去指定一个流程和规范</li>
+</ol>
+<p>中途切换：一般分为UI、场景、特效、后处理效果几个部分，处理的方式可能有些部分方法多一点</p>
+<h4 id="21-ui部分">2.1 UI部分</h4>
+<p>制作UI的软件在输出的时候，可以去选择导出的色彩空间，默认的色彩空间也不太一样，PS默认是Gamma，Sketch默认是Unmanaged，会跟随系统的默认颜色配置文件，当然这些可以在设置中修改</p>
+<ul>
+<li>
+<p>方案一：</p>
+<p>Unity设置中切换色彩空间为Linear，UI输出为sRGB，导入Unity中勾选sRGB，进行去除Gamma矫正恢复为线性，Shader渲染运算后进行Gamma矫正，再通过显示器显示，就是线性的真实的。</p>
+<p>需要美术确定好图片色彩空间，统一输出sRGB，程序对UI进行全部替换</p>
+</li>
+<li>
+<p>方案二：</p>
+<p>因为切换完之后，会发现UI有点亮，很细微，所以可以Unity设置中保留为Gamma，需要在渲染后处理时将UI塞入单独Camera渲染，渲染时需要写Shader进行内部处理，进行一次Gamma的转换，或者更多的处理，让UI看上去和之前效果一样</p>
+</li>
+<li>
+<p>方案三：</p>
+<p>Unity设置为Linear，不管当前UI的变化，后期的UI都保持新的色彩空间格式输出</p>
+</li>
+</ul>
+<h4 id="22-场景部分">2.2 场景部分</h4>
+<p>场景受光照影响很大，所以受色彩空间影响很大</p>
+<ul>
+<li>
+<p>方案一：</p>
+<p>Unity设置为Linear，对场景进行后处理，后处理方式得注意，urp的渲染管线下，之前的OnRenderImage等不能使用，urp下后处理写法稍微复杂，相当于自己写一个后处理的Effect，在后处理中进行Gamma转换</p>
+</li>
+<li>
+<p>方案二：</p>
+<p>Unity设置为Linear，对场景光照进行大的重新调整去实现之前的效果，但是对于后期新的模型不是很友好</p>
+</li>
+<li>
+<p>方案三：</p>
+<p>Unity设置为Linear，对现有的每一个模型导入打包重新进行线性输出，对应光照也得需要进行稍微调整</p>
+</li>
+</ul>
+<h4 id="23-特效部分">2.3 特效部分</h4>
+<p>看的过程中，发现部分人说特效部分还有很多牵扯到线性和非线性的，会使特效效果肉眼看上去不一样</p>
+<h4 id="24-总结">2.4 总结</h4>
+<p>一种是全部程序去后处理效果，尽量还原；另一种是资源重新制作，切换到对应色彩空间；一种是能忍受的就忍受，不行的就调整其他光照或者局部调整去尽量差不多，但是调整可能比较大</p>
+<p>这部分可能还需要考虑到打包工具、用户个人上传的模型、图片的色彩空间等</p>
+<hr>
+<blockquote>
+<p>文章参考<br>
+<a href="https://blog.csdn.net/zakerhero/article/details/106793571">Unity的URP的自定义后处理效果_unity urp后期处理材质_黄琅的博客-CSDN博客</a><br>
+<a href="https://zhuanlan.zhihu.com/p/66558476">Gamma、Linear、sRGB 和Unity Color Space，你真懂了吗？ - 知乎 (zhihu.com)</a></p>
+</blockquote>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#1-linear-gamma-srgb%E5%92%8C%E4%BC%BD%E9%A9%AC%E6%A0%A1%E6%AD%A3">1. Linear、Gamma、sRGB和伽马校正</a></li>
+<li><a href="#2-%E9%A1%B9%E7%9B%AE%E5%88%87%E6%8D%A2%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4">2. 项目切换色彩空间</a>
+<ul>
+<li><a href="#21-ui%E9%83%A8%E5%88%86">2.1 UI部分</a></li>
+<li><a href="#22-%E5%9C%BA%E6%99%AF%E9%83%A8%E5%88%86">2.2 场景部分</a></li>
+<li><a href="#23-%E7%89%B9%E6%95%88%E9%83%A8%E5%88%86">2.3 特效部分</a></li>
+<li><a href="#24-%E6%80%BB%E7%BB%93">2.4 总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://sumborn.github.io/post/hello-gridea/">
+              <h3 class="post-title">
+                Hello Gridea
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://sumborn.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://sumborn.github.io</id>
+    <title>夏至生荫</title>
+    <updated>2024-07-08T10:44:51.314Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://sumborn.github.io"/>
+    <link rel="self" href="https://sumborn.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://sumborn.github.io/images/avatar.png</logo>
+    <icon>https://sumborn.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, 夏至生荫</rights>
+    <entry>
+        <title type="html"><![CDATA[Net基础]]></title>
+        <id>https://sumborn.github.io/post/Net基础/</id>
+        <link href="https://sumborn.github.io/post/Net基础/">
+        </link>
+        <updated>2023-05-21T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>关于网络的一些基础常识</p>
+<hr>
+<h4 id="四大请求">四大请求</h4>
+<ul>
+<li>GET：search，向数据库发送请求索取数据，不会增加修改数据，不会影响数据库内容</li>
+<li>PUT：update，向数据库发送请求改变数据，修改的是某个具体资源的内容，不会增加数据种类</li>
+<li>POST：insert，向数据库发送请求改变数据，但是会创建新的内容，多出一个东西</li>
+<li>DELETE：delete，向数据库发送删除请求</li>
+</ul>
+<p><strong>注意：</strong> PUT主要作用于一个具体的资源上（url/xxx），POST主要是一个集合资源上（url）</p>
+<hr>
+<h4 id="数字证书">数字证书</h4>
+<p>数字证书相当于互联网通讯的驾驶执照，用来识别身份，最简单的数字证书包含一个公钥、名称以及证书授权机构的数字签名</p>
+<h4 id="数字签名">数字签名</h4>
+<p>一段报文，被发送者用私钥加密，再连同原报文一起的新的报文，就是数字签名</p>
+<p><a href="https://blog.csdn.net/hcm_0079/article/details/84980928">https://blog.csdn.net/hcm_0079/article/details/84980928</a></p>
+<hr>
+<h4 id="x509">X509</h4>
+<p>X509是密码学里公钥证书的格式标准，规定了证书可以包含的信息以及格式</p>
+<p>X509证书包含公钥、身份信息和签名信息</p>
+<hr>
+<h4 id="http与https">Http与Https</h4>
+<p>Https相当于Http+SSL，是更为安全的传输协议，传输过程中都是被加密的密文信息</p>
+<p>Http传输的都是明文信息</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[色彩空间]]></title>
+        <id>https://sumborn.github.io/post/色彩空间/</id>
+        <link href="https://sumborn.github.io/post/色彩空间/">
+        </link>
+        <updated>2023-05-21T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="1-linear-gamma-srgb和伽马校正">1. Linear、Gamma、sRGB和伽马校正</h3>
+<p>真实物理世界：光强度增加一倍，亮度增加一倍，线性关系</p>
+<p>显示器图像：显示器显示图像，电压增加一倍，亮度不是增加一倍，而是</p>
+<figure data-type="image" tabindex="1"><img src="https://sumborn.github.io/post-images/1720431139971.png" alt="" loading="lazy"></figure>
+<p>2.2也叫做该显示器的Gamma值，现代显示器的Gamma值也都大约是2.2</p>
+<p>为了平衡人看显示器时，显示器显示的非线性关系，那就在显示器显示之前做一个平衡操作抵消掉，那么最终看到的就和物理世界看到的一样了，这个平衡操作操作就是伽马矫正</p>
+<p>在数学上，伽马矫正是一个约0.45的幂运算</p>
+<figure data-type="image" tabindex="2"><img src="https://sumborn.github.io/post-images/1720431150365.png" alt="" loading="lazy"></figure>
+<p>经过矫正，最终输出就和物理世界一样了</p>
+<figure data-type="image" tabindex="3"><img src="https://sumborn.github.io/post-images/1720431156514.png" alt="" loading="lazy"></figure>
+<p>sRGB：对应的是Gamma0.45所在的空间，由u微软和惠普一起开发</p>
+<p>sRGB为什么在Gamma0.45呢，保存的照片如果是Gamma0.45，那么当在显示器打开这个图片的时候，正好和显示器的Gamma2.2进行抵消，人眼看显示器看到的就和物理世界是一致的了</p>
+<hr>
+<h3 id="2-项目切换色彩空间">2. 项目切换色彩空间</h3>
+<p>简单看了下网上的问题和做法，做个总结，没有更深入去实践</p>
+<ol>
+<li>一般项目是立项之初就确定了渲染管线以及色彩空间，采用urp的话默认的一般是用linear</li>
+<li>色彩空间需要美术、模型、渲染共同去指定一个流程和规范</li>
+</ol>
+<p>中途切换：一般分为UI、场景、特效、后处理效果几个部分，处理的方式可能有些部分方法多一点</p>
+<h4 id="21-ui部分">2.1 UI部分</h4>
+<p>制作UI的软件在输出的时候，可以去选择导出的色彩空间，默认的色彩空间也不太一样，PS默认是Gamma，Sketch默认是Unmanaged，会跟随系统的默认颜色配置文件，当然这些可以在设置中修改</p>
+<ul>
+<li>
+<p>方案一：</p>
+<p>Unity设置中切换色彩空间为Linear，UI输出为sRGB，导入Unity中勾选sRGB，进行去除Gamma矫正恢复为线性，Shader渲染运算后进行Gamma矫正，再通过显示器显示，就是线性的真实的。</p>
+<p>需要美术确定好图片色彩空间，统一输出sRGB，程序对UI进行全部替换</p>
+</li>
+<li>
+<p>方案二：</p>
+<p>因为切换完之后，会发现UI有点亮，很细微，所以可以Unity设置中保留为Gamma，需要在渲染后处理时将UI塞入单独Camera渲染，渲染时需要写Shader进行内部处理，进行一次Gamma的转换，或者更多的处理，让UI看上去和之前效果一样</p>
+</li>
+<li>
+<p>方案三：</p>
+<p>Unity设置为Linear，不管当前UI的变化，后期的UI都保持新的色彩空间格式输出</p>
+</li>
+</ul>
+<h4 id="22-场景部分">2.2 场景部分</h4>
+<p>场景受光照影响很大，所以受色彩空间影响很大</p>
+<ul>
+<li>
+<p>方案一：</p>
+<p>Unity设置为Linear，对场景进行后处理，后处理方式得注意，urp的渲染管线下，之前的OnRenderImage等不能使用，urp下后处理写法稍微复杂，相当于自己写一个后处理的Effect，在后处理中进行Gamma转换</p>
+</li>
+<li>
+<p>方案二：</p>
+<p>Unity设置为Linear，对场景光照进行大的重新调整去实现之前的效果，但是对于后期新的模型不是很友好</p>
+</li>
+<li>
+<p>方案三：</p>
+<p>Unity设置为Linear，对现有的每一个模型导入打包重新进行线性输出，对应光照也得需要进行稍微调整</p>
+</li>
+</ul>
+<h4 id="23-特效部分">2.3 特效部分</h4>
+<p>看的过程中，发现部分人说特效部分还有很多牵扯到线性和非线性的，会使特效效果肉眼看上去不一样</p>
+<h4 id="24-总结">2.4 总结</h4>
+<p>一种是全部程序去后处理效果，尽量还原；另一种是资源重新制作，切换到对应色彩空间；一种是能忍受的就忍受，不行的就调整其他光照或者局部调整去尽量差不多，但是调整可能比较大</p>
+<p>这部分可能还需要考虑到打包工具、用户个人上传的模型、图片的色彩空间等</p>
+<hr>
+<blockquote>
+<p>文章参考<br>
+<a href="https://blog.csdn.net/zakerhero/article/details/106793571">Unity的URP的自定义后处理效果_unity urp后期处理材质_黄琅的博客-CSDN博客</a><br>
+<a href="https://zhuanlan.zhihu.com/p/66558476">Gamma、Linear、sRGB 和Unity Color Space，你真懂了吗？ - 知乎 (zhihu.com)</a></p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello Gridea]]></title>
+        <id>https://sumborn.github.io/post/hello-gridea/</id>
+        <link href="https://sumborn.github.io/post/hello-gridea/">
+        </link>
+        <updated>2018-12-11T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<!-- more -->
+<p><a href="https://github.com/getgridea/gridea">Github</a><br>
+<a href="https://gridea.dev/">Gridea 主页</a><br>
+<a href="https://fehey.com/">示例网站</a></p>
+<h2 id="特性">特性👇</h2>
+<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
+<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
+<p>🏷️  你可以对文章进行标签分组</p>
+<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
+<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
+<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
+<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
+<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
+<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
+<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
+<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
+<p>未来，它一定会成为你离不开的伙伴</p>
+<p>尽情发挥你的才华吧！</p>
+<p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+</feed>
